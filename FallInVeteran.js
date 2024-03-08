@@ -185,8 +185,8 @@ if (clusters.isPrimary) {
     app.use("/fallinveteran/api", Route)
 
     //listening port runnig server
-    server.listen(3100, () => {
-        console.log('listening on *:3000');
+    server.listen(3007, () => {
+        console.log('listening on *:3007');
     });
 }
 
