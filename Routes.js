@@ -63,7 +63,7 @@ Route.post('/resetForgetPassword', AuthController.resetForgetPassword)
 
 //After Auth Route
 Route.post('/CreatePost', Post_Pictures_Upload.single('Post_Picture'), PostController.CreatePost)
-Route.get('/GetAllPost', PostController.GetAllPost)
+Route.post('/GetAllPost', PostController.GetAllPost)
 Route.post('/Like_On_Post', PostController.Like_On_Post)
 Route.post('/Comment_On_Post', PostController.Comment_On_Post)
 Route.post('/Share_the_Post', PostController.Share_the_Post)

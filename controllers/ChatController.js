@@ -8,8 +8,11 @@ class ChatController {
     static getAllChatUsers = async (req, res) => {
         const { id } = req.body
 
+        const userData = req.user
 
+        console.log("ress", userData)
 
+        
         const existingChats = await AllChatUsers.find({
             $or: [
                 { sender_id: id },
