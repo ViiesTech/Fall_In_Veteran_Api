@@ -7,6 +7,7 @@ const multer = require('multer')
 const path = require('path')
 const PostController = require('./controllers/PostController.js')
 const ChatController = require('./controllers/ChatController.js')
+const FriendRequestController = require('./controllers/FriendRequestController.js')
 
 
 const Route = express.Router()
@@ -39,7 +40,9 @@ const Post_Pictures_Upload = multer({
 })
 
 
+
 //Middleware Routes
+Route.use('/getUserData', checkUserAuth)
 Route.use('/CreatePost', checkUserAuth)
 Route.use('/GetAllPost', checkUserAuth)
 Route.use('/Like_On_Post', checkUserAuth)
@@ -52,6 +55,14 @@ Route.use('/getFriendsPost', checkUserAuth)
 Route.use('/getAllChatUsers', checkUserAuth)
 Route.use('/getChat', checkUserAuth)
 
+Route.use('/FriendRequestSend', checkUserAuth)
+Route.use('/AcceptFriendRequest', checkUserAuth)
+Route.use('/GetAllFriendRequest', checkUserAuth)
+Route.use('/GetAppUsers', checkUserAuth)
+Route.use('/CancelFriendRequest', checkUserAuth)
+Route.use('/CancelTheRequestISend', checkUserAuth)
+Route.use('/unFriendUser', checkUserAuth)
+
 
 
 //Authentication Routes
@@ -60,6 +71,7 @@ Route.post('/Register', Profile_Picture_Upload.single('profile'), AuthController
 Route.post('/sendUserPasswordEmail', AuthController.sendUserPasswordEmail)
 Route.post('/VerifyOtp', AuthController.VerifyOtp)
 Route.post('/resetForgetPassword', AuthController.resetForgetPassword)
+Route.get('/getUserData', AuthController.getUserData)
 
 //After Auth Route
 Route.post('/CreatePost', Post_Pictures_Upload.single('Post_Picture'), PostController.CreatePost)
@@ -74,5 +86,15 @@ Route.post('/getFriendsPost', PostController.getFriendsPost)
 //chat routes
 Route.post('/getAllChatUsers', ChatController.getAllChatUsers)
 Route.post('/getChat', ChatController.getChat)
+
+//Friends Request Routes
+Route.post('/FriendRequestSend', FriendRequestController.FriendRequestSend)
+Route.post('/AcceptFriendRequest', FriendRequestController.AcceptFriendRequest)
+Route.get('/GetAllFriendRequest', FriendRequestController.GetAllFriendRequest)
+Route.get('/GetAppUsers', FriendRequestController.GetAppUsers)
+Route.post('/CancelFriendRequest', FriendRequestController.CancelFriendRequest)
+Route.post('/CancelTheRequestISend', FriendRequestController.CancelTheRequestISend)
+Route.post('/unFriendUser', FriendRequestController.unFriendUser)
+
 
 module.exports = Route

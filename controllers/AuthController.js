@@ -197,6 +197,34 @@ class AuthController {
 
     }
 
+    static getUserData = async (req, res ) => {
+        const userData = req.user;
+
+        try {
+            // Execute the Mongoose query to find the user by ID
+            const findUser = await UserModal.findById(userData._id);
+    
+            if (findUser) {
+                res.json({
+                    success: true,
+                    message: "User data",
+                    data: findUser
+                });
+            } else {
+                res.json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+        }
+    }
+
 }
 
 

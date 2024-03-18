@@ -68,82 +68,32 @@ class PostController {
 
     static async Like_On_Post(req, res) {
         try {
-            const { Post_id  } = req.body;
+            const { postId, PostReaction } = req.body;
+
+
             const userData = req.user;
 
-            const post = await PostModal.findById(Post_id);
+            const post = await PostModal.findById(postId);
 
-            // const reactions = {
-            //     User_id: Post_id,
-            //     reaction: reaction
-            // }
-            // if(reaction == -1){
-
-
-            //     const updatedPost = await PostModal.findByIdAndUpdate(
-            //         Post_id,
-            //         { $pull: { Post_Like: reactions } },
-            //         { new: true } // To return the updated document
-            //     );
-
-            //     if (!updatedPost) {
-            //         return res.status(404).json({ success: false, message: "Post not found" });
-            //     }
-
-            //     res.json({
-            //         Success: true,
-            //         Post_data: updatedPost
-            //     });
-
-            //     return
-            // }
-
-            // console.log("sdasdasdasdsa")
-
-            
-
-            if (post.Post_Like.includes(userData._id)) {
-                const updatedPost = await PostModal.findByIdAndUpdate(
-                    Post_id,
-                    { $pull: { Post_Like:  userData._id } },
-                    { new: true } // To return the updated document
-                );
-
-                if (!updatedPost) {
-                    return res.status(404).json({ success: false, message: "Post not found" });
-                }
-
-                res.json({
-                    Success: true,
-                    Post_data: updatedPost
-                });
+            const userReactionIndnex = post.Post_Like.findIndex(reactions => reactions.myId.equals(userData._id))
+            if (userReactionIndnex == -1) {
+                post.Post_Like.push({ myId: userData._id, PostReaction: PostReaction, postId: postId }); // 
             } else {
-                const updatedPost = await PostModal.findByIdAndUpdate(
-                    Post_id,
-                    { $push: { Post_Like: userData._id} },
-                    { new: true } // To return the updated document
-                );
-
-                if (!updatedPost) {
-                    return res.status(404).json({ success: false, message: "Post not found" });
-                }
-
-                res.json({
-                    Success: true,
-                    Post_data: updatedPost
-                });
-
+                post.Post_Like[userReactionIndnex].PostReaction = PostReaction; // Assuming 
             }
 
+            const updatedPost = await post.save();
 
+            res.json({
+                Success: true,
+                Post_data: updatedPost
+            });
 
 
         } catch (error) {
-            console.error("Error liking post:", error);
             res.status(500).json({ success: false, error: "Server Error" });
         }
     }
-
 
     static async Comment_On_Post(req, res) {
         try {
@@ -252,15 +202,15 @@ class PostController {
     }
 
 
-    static async getFriendsPost (req, res){
-        const {FriendID} = req.body
+    static async getFriendsPost(req, res) {
+        const { FriendID } = req.body
 
-        const AllFriendsPost = await PostModal.find({userId: FriendID}).exec()
+        const AllFriendsPost = await PostModal.find({ userId: FriendID }).exec()
 
         res.send({
-            status : true,
+            status: true,
             message: "All post of the profile you visited",
-            data : AllFriendsPost
+            data: AllFriendsPost
         })
     }
 

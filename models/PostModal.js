@@ -14,7 +14,17 @@ const PostModal = new mongoose.Schema({
         type: String,
         require: false
     },
-    Post_Like:[],
+    Post_Like:[{
+        myId : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User', // Reference to the User model
+        },
+        PostReaction: String,
+        postId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post', // Reference to the
+        },
+    }],
     // Post_Like: [{
     //     User_id: {
     //         type: mongoose.Schema.Types.ObjectId,

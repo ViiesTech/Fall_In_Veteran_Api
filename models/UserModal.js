@@ -29,9 +29,9 @@ const UserModal = mongoose.Schema({
     tc: {
         type : Boolean
     },
-    Req: [],
-    Friends: [],
-    ReqSend: [],
+    Req: [ mongoose.Schema.Types.ObjectId],
+    Friends: [ mongoose.Schema.Types.ObjectId],
+    ReqSend: [ mongoose.Schema.Types.ObjectId],
     socketId: String
 },{timestamps: true})
 
