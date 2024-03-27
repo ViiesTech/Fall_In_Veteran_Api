@@ -25,13 +25,7 @@ const PostModal = new mongoose.Schema({
             ref: 'Post', // Reference to the
         },
     }],
-    // Post_Like: [{
-    //     User_id: {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: 'User', // Reference to the User model
-    //     } ,
-    //     reaction: String
-    // }],
+
     Post_Share: [],
     All_Comments_On_Post: [
         {
@@ -49,18 +43,19 @@ const PostModal = new mongoose.Schema({
         type : Boolean,
         require: false
     },
-    CommunityId: {
-        type : String,
+    Page_id:{
+        type: mongoose.Schema.Types.ObjectId,
         require: false
     },
-    CommunityImage: {
-        type : String,
+    Page_name:{
+        type: String,
         require: false
     },
-    CommunityName: {
-        type : String,
+    Page_Profile_Picture:{
+        type: String,
         require: false
     }
+
 
 }, { timestamps: true })
 

@@ -8,6 +8,7 @@ const path = require('path')
 const PostController = require('./controllers/PostController.js')
 const ChatController = require('./controllers/ChatController.js')
 const FriendRequestController = require('./controllers/FriendRequestController.js')
+const PageController = require('./controllers/PageController.js')
 
 
 const Route = express.Router()
@@ -20,14 +21,12 @@ const Profile_Picture_Storage = multer.diskStorage({
         cb(null, Date.now() + '.' + splitString[1]);
     }
 })
-
-
 const Profile_Picture_Upload = multer({
     storage: Profile_Picture_Storage
 })
 
 
-//multer code
+//multer code post images
 const Post_Pictures_Storage = multer.diskStorage({
     destination: './upload/images/Post_Pictures',
     filename: (req, file, cb) => {
@@ -37,6 +36,19 @@ const Post_Pictures_Storage = multer.diskStorage({
 })
 const Post_Pictures_Upload = multer({
     storage: Post_Pictures_Storage
+})
+
+
+//multer code post images
+const PageProfilePicture = multer.diskStorage({
+    destination: './upload/images/Page_Profiles',
+    filename: (req, file, cb) => {
+        const splitString = file.mimetype.split('image/')
+        cb(null, Date.now() + '.' + splitString[1]);
+    }
+})
+const Page_Profile_Upload = multer({
+    storage: PageProfilePicture
 })
 
 
@@ -63,6 +75,11 @@ Route.use('/CancelFriendRequest', checkUserAuth)
 Route.use('/CancelTheRequestISend', checkUserAuth)
 Route.use('/unFriendUser', checkUserAuth)
 
+Route.use('/CreatePage', checkUserAuth)
+Route.use('/GetAllPages', checkUserAuth)
+Route.use('/LikePage', checkUserAuth)
+Route.use('/PageILiked', checkUserAuth)
+Route.use('/GetPagePost', checkUserAuth)
 
 
 //Authentication Routes
@@ -95,6 +112,15 @@ Route.get('/GetAppUsers', FriendRequestController.GetAppUsers)
 Route.post('/CancelFriendRequest', FriendRequestController.CancelFriendRequest)
 Route.post('/CancelTheRequestISend', FriendRequestController.CancelTheRequestISend)
 Route.post('/unFriendUser', FriendRequestController.unFriendUser)
+
+//Page Request Routes
+Route.post('/CreatePage', Page_Profile_Upload.single('Page_Profile'), PageController.CreatePage)
+Route.get('/GetAllPages', PageController.GetAllPages)
+Route.post('/LikePage', PageController.LikePage)
+Route.get('/PageILiked', PageController.PageILiked)
+Route.post('/GetPagePost', PageController.GetPagePost)
+
+
 
 
 module.exports = Route

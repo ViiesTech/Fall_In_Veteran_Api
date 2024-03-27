@@ -4,7 +4,7 @@ const PostModal = require('../models/PostModal.js')
 class PostController {
     static CreatePost(req, res) {
 
-        const { message, comunityStatus, CommunityId, CommunityImage, CommunityName } = req.body
+        const { message, comunityStatus, Page_id, Page_Profile_Picture, Page_name } = req.body
         const userData = req.user;
 
 
@@ -14,7 +14,7 @@ class PostController {
         if (req.file && req.file.filename) {
             postImage = req.file.filename; // Set postImage if a file was uploaded
         }
-
+        
         const Create_Post = new PostModal({
             userId: userData._id,
             name: userData.name,
@@ -25,9 +25,9 @@ class PostController {
             All_Comments_On_Post: [],
             Profile_Picture: userData.Profile_Picture,
             comunityStatus: comunityStatus,
-            CommunityId: CommunityId,
-            CommunityImage: CommunityImage,
-            CommunityName: CommunityName
+            Page_id: Page_id,
+            Page_Profile_Picture: Page_Profile_Picture,
+            Page_name: Page_name
 
         })
 
@@ -151,14 +151,14 @@ class PostController {
             const post = await PostModal.findById(Post_id);
 
 
-            if (post.Post_Share.includes(userData._id)) {
+            // if (post.Post_Share.includes(userData._id)) {
 
 
-                res.json({
-                    "Success": true,
-                    "message": "post already Shared"
-                });
-            } else {
+            //     res.json({
+            //         "Success": true,
+            //         "message": "post already Shared"
+            //     });
+            // } else {
                 const updatedPost = await PostModal.findByIdAndUpdate(
                     Post_id,
                     { $push: { Post_Share: userData._id } },
@@ -174,7 +174,7 @@ class PostController {
                     "Post_data": updatedPost
                 });
 
-            }
+            // }
 
 
 
@@ -185,22 +185,22 @@ class PostController {
         }
     }
 
-
     static async getOnlyMyPost(req, res) {
-
-        const userData = req.user
-
-        const myPost = await PostModal.find({ $or: [{ userId: userData._id }, { Post_Share: { $in: [userData._id] } }] })
-
-
-
+        const userData = req.user;
+    
+        const myPost = await PostModal.find({
+            $or: [
+                { userId: userData._id }, 
+                { Post_Share: { $elemMatch: { $in: [userData._id] } } }
+            ]
+        });
+    
         res.send({
             "status": true,
             "data": myPost
-        })
-        console.log("first")
+        });
+        console.log("first");
     }
-
 
     static async getFriendsPost(req, res) {
         const { FriendID } = req.body

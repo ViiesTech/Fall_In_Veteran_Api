@@ -28,6 +28,7 @@ app.use(cors())
 
 app.use('/uploads', express.static('upload/images/Profile_Picture'));
 app.use('/Post_Pictures', express.static('upload/images/Post_Pictures'));
+app.use('/Page_Profiles', express.static('upload/images/Page_Profiles'));
 
 //connnecting db
 Connect_DB()

@@ -32,7 +32,8 @@ const UserModal = mongoose.Schema({
     Req: [ mongoose.Schema.Types.ObjectId],
     Friends: [ mongoose.Schema.Types.ObjectId],
     ReqSend: [ mongoose.Schema.Types.ObjectId],
-    socketId: String
+    socketId: String,
+    PageIFollow: [ mongoose.Schema.Types.ObjectId]
 },{timestamps: true})
 
 const User = mongoose.model('User', UserModal);

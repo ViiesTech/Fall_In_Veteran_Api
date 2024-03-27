@@ -39,7 +39,8 @@ class AuthController {
                         socketId:"",
                         Req: [],
                         Friends: [],
-                        ReqSend: []
+                        ReqSend: [],
+                        PageIFollow:[]
                     })
 
                     CreateAccount.save().then(async () => {
